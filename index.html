@@ -236,7 +236,6 @@
 
         const initialCategory = window.location.hash.substring(1) || 'diseno';
         activateTab(initialCategory);
-        if (!window.location.hash) { history.replaceState(null, '', '#diseno'); }
 
         // --- MODAL LOGIC ---
         const modal = document.getElementById('project-modal');
