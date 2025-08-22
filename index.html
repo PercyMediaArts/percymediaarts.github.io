@@ -229,13 +229,36 @@
         }
 
         tabButtons.forEach(button => {
-            button.addEventListener('click', (e) => { window.location.hash = e.currentTarget.dataset.tab; });
+            button.addEventListener('click', (e) => { 
+                const newHash = e.currentTarget.dataset.tab;
+                // Update hash without causing a page jump if it's already visible
+                if (history.pushState) {
+                    history.pushState(null, null, '#' + newHash);
+                } else {
+                    window.location.hash = newHash;
+                }
+                activateTab(newHash);
+            });
         });
 
-        window.addEventListener('hashchange', () => { activateTab(window.location.hash.substring(1)); });
+        window.addEventListener('hashchange', () => { 
+            const category = window.location.hash.substring(1) || 'diseno';
+            activateTab(category);
+        });
 
+        // Initial Load Logic
         const initialCategory = window.location.hash.substring(1) || 'diseno';
         activateTab(initialCategory);
+
+        const validCategories = ['diseno', 'animacion', 'video', '3d'];
+        if (validCategories.includes(initialCategory) && window.location.hash) {
+            const worksSection = document.getElementById('works');
+            if (worksSection) {
+                setTimeout(() => {
+                    worksSection.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
 
         // --- MODAL LOGIC ---
         const modal = document.getElementById('project-modal');
