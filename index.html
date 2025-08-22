@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Alex Doe - Diseñador Creativo & Artista Digital</title>
+    <meta name="description" content="Portafolio de Alex Doe, un diseñador creativo y artista digital especializado en branding, UI/UX y arte 3D. Explora mis proyectos y mi proceso creativo.">
+    <meta name="keywords" content="diseñador gráfico, portafolio, diseño web, UI/UX, branding, arte 3D, creativo, artista digital, Alex Doe">
+    <meta name="author" content="Alex Doe">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+
+    <style>
+        /* Custom Styles & Overrides */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+            color: #F3F4F6; /* text-gray-200 */
+            cursor: none; /* Hide default cursor */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #5EEAD4; /* teal-300 */
+            border-radius: 50%;
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            transition: transform 0.2s ease-out, width 0.2s ease-out, height 0.2s ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #5EEAD4; /* teal-300 */
+            border-radius: 50%;
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+            transform: translate(-50%, -50%);
+            opacity: 0.5;
+        }
+        
+        /* Grow cursor on hover */
+        .cursor-grow {
+            transform: scale(3) translate(-15%, -15%);
+            background-color: #5EEAD4;
+            opacity: 0.5;
+        }
+
+        /* Hide custom cursor on mobile */
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+            body {
+                cursor: default;
+            }
+        }
+
+        /* Scroll reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(to right, #5EEAD4, #A78BFA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        
+        /* Hero Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Header -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold tracking-wider hover:text-teal-300 transition-colors">Alex Doe.</a>
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#works" class="text-gray-300 hover:text-teal-300 transition-colors">Proyectos</a>
+                <a href="#about" class="text-gray-300 hover:text-teal-300 transition-colors">Sobre Mí</a>
+                <a href="#contact" class="bg-teal-400 text-gray-900 px-4 py-2 rounded-md font-bold hover:bg-teal-300 transition-all transform hover:scale-105">Contacto</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-2xl z-50">
+                <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+                <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-gray-900 bg-opacity-95 z-40 hidden flex-col items-center justify-center space-y-8 text-2xl">
+        <a href="#works" class="mobile-link text-gray-300 hover:text-teal-300 transition-colors">Proyectos</a>
+        <a href="#about" class="mobile-link text-gray-300 hover:text-teal-300 transition-colors">Sobre Mí</a>
+        <a href="#contact" class="mobile-link bg-teal-400 text-gray-900 px-6 py-3 rounded-md font-bold hover:bg-teal-300 transition-all">Contacto</a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="h-screen flex items-center justify-center relative overflow-hidden">
+            <canvas id="hero-canvas"></canvas>
+            <div class="text-center z-10 p-6">
+                <h1 class="text-5xl md:text-8xl font-extrabold mb-4 leading-tight">
+                    <span class="gradient-text">Alex Doe</span>
+                </h1>
+                <p class="text-xl md:text-3xl text-gray-300 mb-8">Diseñador Creativo & Artista Digital</p>
+                <div class="space-x-4">
+                    <a href="#works" class="bg-teal-400 text-gray-900 px-8 py-3 rounded-md font-bold text-lg hover:bg-teal-300 transition-all transform hover:scale-105 inline-block">Ver Mi Trabajo</a>
+                    <a href="#about" class="border-2 border-gray-500 text-gray-300 px-8 py-3 rounded-md font-bold text-lg hover:bg-gray-800 hover:border-gray-400 transition-all transform hover:scale-105 inline-block">Sobre Mí</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Works Section -->
+        <section id="works" class="py-20 md:py-32 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold">Proyectos Destacados</h2>
+                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">Una selección curada de mis trabajos que muestran mi pasión por el diseño y la creatividad.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                    <!-- Project Card 1 -->
+                    <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="1">
+                        <img src="https://placehold.co/600x400/111827/5EEAD4?text=Proyecto+1" alt="Imagen del Proyecto 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                            <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">Branding Cósmico</h3>
+                                <p class="text-gray-300 mb-4">Identidad visual para una startup de tecnología espacial.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more project cards similarly -->
+                    <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="2" style="transition-delay: 100ms;">
+                        <img src="https://placehold.co/600x400/A78BFA/FFFFFF?text=Proyecto+2" alt="Imagen del Proyecto 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                             <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">App de Meditación</h3>
+                                <p class="text-gray-300 mb-4">Diseño UI/UX enfocado en la calma y la serenidad.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="3" style="transition-delay: 200ms;">
+                        <img src="https://placehold.co/600x400/F472B6/FFFFFF?text=Proyecto+3" alt="Imagen del Proyecto 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                             <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">Mundo 3D Abstracto</h3>
+                                <p class="text-gray-300 mb-4">Exploración artística con Cinema 4D y Redshift.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="4" style="transition-delay: 0ms;">
+                        <img src="https://placehold.co/600x400/34D399/FFFFFF?text=Proyecto+4" alt="Imagen del Proyecto 4" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                             <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">E-commerce Sostenible</h3>
+                                <p class="text-gray-300 mb-4">Diseño de una tienda online para productos ecológicos.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="5" style="transition-delay: 100ms;">
+                        <img src="https://placehold.co/600x400/FBBF24/FFFFFF?text=Proyecto+5" alt="Imagen del Proyecto 5" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                             <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">Campaña de Posters</h3>
+                                <p class="text-gray-300 mb-4">Serie de posters para un festival de música indie.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg shadow-lg reveal" data-project-id="6" style="transition-delay: 200ms;">
+                        <img src="https://placehold.co/600x400/60A5FA/FFFFFF?text=Proyecto+6" alt="Imagen del Proyecto 6" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center p-4">
+                             <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:translate-y-0 translate-y-4">
+                                <h3 class="text-2xl font-bold text-white mb-2">Animación de Logo</h3>
+                                <p class="text-gray-300 mb-4">Motion graphics para una marca de tecnología.</p>
+                                <button class="view-project-btn border-2 border-teal-300 text-teal-300 px-4 py-2 rounded-md font-semibold hover:bg-teal-300 hover:text-gray-900 transition-colors">Ver Proyecto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+                    <div class="md:col-span-2 reveal">
+                        <img src="https://placehold.co/500x500/1F2937/A78BFA?text=Alex" alt="Retrato de Alex Doe" class="rounded-lg shadow-2xl w-full">
+                    </div>
+                    <div class="md:col-span-3 reveal" style="transition-delay: 200ms;">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4">Hola, soy <span class="gradient-text">Alex Doe</span></h2>
+                        <p class="text-lg text-gray-300 mb-6">Soy un diseñador multidisciplinario con sede en un rincón creativo del mundo. Mi trabajo se centra en la intersección de la estética y la funcionalidad. Creo que el buen diseño no solo se ve bien, sino que también resuelve problemas y comunica ideas de manera efectiva. Me apasiona crear experiencias digitales memorables que conecten con las personas a un nivel emocional.</p>
+                        <p class="text-lg text-gray-300 mb-8">Cuando no estoy frente a una pantalla, me encontrarás explorando la naturaleza, experimentando con la fotografía analógica o buscando la taza de café perfecta.</p>
+                        <a href="#" class="bg-teal-400 text-gray-900 px-8 py-3 rounded-md font-bold text-lg hover:bg-teal-300 transition-all transform hover:scale-105 inline-block">Descargar mi CV</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 md:py-32 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-12 reveal">Lo que dicen mis clientes</h2>
+                <div class="relative max-w-3xl mx-auto reveal">
+                    <div id="testimonial-slider" class="overflow-hidden">
+                        <div id="testimonial-container" class="flex transition-transform duration-500 ease-in-out">
+                            <!-- Testimonial 1 -->
+                            <div class="w-full flex-shrink-0 px-4">
+                                <p class="text-xl md:text-2xl italic text-gray-300">"Trabajar con Alex fue un cambio de juego para nuestra marca. Su visión y creatividad llevaron nuestro proyecto a un nivel que no creíamos posible."</p>
+                                <p class="mt-4 font-bold text-teal-300">- Jane Smith, CEO de Cosmic Co.</p>
+                            </div>
+                            <!-- Testimonial 2 -->
+                            <div class="w-full flex-shrink-0 px-4">
+                                <p class="text-xl md:text-2xl italic text-gray-300">"La atención al detalle y la comunicación de Alex son impecables. Entendió nuestra visión perfectamente y la ejecutó con maestría."</p>
+                                <p class="mt-4 font-bold text-teal-300">- John Davis, Fundador de Serene App</p>
+                            </div>
+                            <!-- Testimonial 3 -->
+                            <div class="w-full flex-shrink-0 px-4">
+                                <p class="text-xl md:text-2xl italic text-gray-300">"Un profesional increíblemente talentoso. Alex no solo diseña, cuenta historias. Lo recomiendo encarecidamente."</p>
+                                <p class="mt-4 font-bold text-teal-300">- Emily White, Directora de Arte</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="prev-testimonial" class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-12 text-gray-500 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button id="next-testimonial" class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-12 text-gray-500 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 bg-gray-800">
+            <div class="container mx-auto px-6 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 reveal">¿Tienes un proyecto en mente?</h2>
+                    <p class="text-lg text-gray-400 mb-12 reveal">Hablemos. Estoy disponible para colaboraciones y proyectos freelance. <br>¡Construyamos algo increíble juntos!</p>
+                    
+                    <form id="contact-form" class="reveal">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <input type="text" placeholder="Tu Nombre" class="bg-gray-700 border-2 border-gray-600 rounded-md p-3 focus:outline-none focus:border-teal-400 transition-colors w-full" required>
+                            <input type="email" placeholder="Tu Correo Electrónico" class="bg-gray-700 border-2 border-gray-600 rounded-md p-3 focus:outline-none focus:border-teal-400 transition-colors w-full" required>
+                        </div>
+                        <textarea placeholder="Tu Mensaje" rows="5" class="bg-gray-700 border-2 border-gray-600 rounded-md p-3 focus:outline-none focus:border-teal-400 transition-colors w-full mb-6" required></textarea>
+                        <button type="submit" class="bg-teal-400 text-gray-900 px-12 py-4 rounded-md font-bold text-lg hover:bg-teal-300 transition-all transform hover:scale-105 inline-block">Enviar Mensaje</button>
+                    </form>
+                     <div id="form-success-message" class="hidden mt-6 p-4 bg-green-500 text-white rounded-md">¡Gracias! Tu mensaje ha sido enviado. Me pondré en contacto contigo pronto.</div>
+
+                    <div class="mt-16 reveal">
+                        <p class="text-gray-400 mb-4">O encuéntrame en mis redes:</p>
+                        <div class="flex justify-center space-x-6">
+                            <a href="#" class="text-gray-400 hover:text-teal-300 transition-colors">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
+                            </a>
+                             <a href="#" class="text-gray-400 hover:text-teal-300 transition-colors">
+                               <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-teal-300 transition-colors">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.947s-.014-3.667-.072-4.947c-.197-4.354-2.619-6.78-6.98-6.98-1.28-.059-1.688-.073-4.947-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 py-8">
+        <div class="container mx-auto px-6 text-center text-gray-500">
+            <p>&copy; <span id="current-year"></span> Alex Doe. Todos los derechos reservados.</p>
+            <p class="text-sm mt-2">Diseñado y codificado con ❤️ y mucho café.</p>
+        </div>
+    </footer>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden items-center justify-center p-4">
+        <div id="modal-content" class="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative p-8 md:p-12">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- DATA FOR PROJECTS ---
+        const projectData = {
+            1: {
+                title: "Branding Cósmico",
+                category: "Identidad Visual",
+                image: "https://placehold.co/800x500/111827/5EEAD4?text=Branding+Cósmico",
+                problem: "Una startup de tecnología espacial necesitaba una identidad de marca audaz y futurista que inspirara confianza y evocara la inmensidad del cosmos, diferenciándose de competidores con estéticas más corporativas y frías.",
+                process: "El proceso comenzó con una inmersión profunda en la astronomía y la ciencia ficción para la inspiración. Se exploraron conceptos de nebulosas, constelaciones y geometría celestial. Se crearon moodboards, seguidos de docenas de bocetos de logotipos. La paleta de colores se eligió para reflejar tanto la oscuridad del espacio como la brillantez de las estrellas y la tecnología.",
+                solution: "Se desarrolló un sistema de identidad visual completo, con un logotipo dinámico que tiene múltiples variaciones, una paleta de colores vibrante sobre fondos oscuros, y una tipografía moderna y técnica. El resultado es una marca que se siente innovadora, confiable y llena de posibilidades.",
+                tools: ["Adobe Illustrator", "Adobe Photoshop", "Figma"],
+                gallery: [
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Boceto+1",
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Paleta+Color",
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Aplicación"
+                ]
+            },
+            2: {
+                title: "App de Meditación 'Serene'",
+                category: "UI/UX Design",
+                image: "https://placehold.co/800x500/A78BFA/FFFFFF?text=App+Serene",
+                problem: "El mercado de apps de meditación está saturado. El reto era diseñar una interfaz que no solo fuera funcional, sino que activamente contribuyera a un estado de calma y redujera la ansiedad del usuario desde el primer momento.",
+                process: "La investigación de usuarios fue clave. Se realizaron entrevistas y se analizaron competidores para identificar puntos de dolor. El diseño se basó en principios de psicología del color y minimalismo. Se crearon wireframes de baja y alta fidelidad, seguidos de prototipos interactivos que fueron probados con usuarios reales para refinar el flujo y las interacciones.",
+                solution: "Una interfaz limpia, con una navegación intuitiva, animaciones suaves y una paleta de colores pastel. La experiencia de usuario guía suavemente a la persona a través de las meditaciones, eliminando distracciones y creando un santuario digital para la mente.",
+                tools: ["Figma", "Adobe XD", "Principle"],
+                gallery: [
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Wireframe",
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Prototipo",
+                    "https://placehold.co/400x300/1F2937/FFFFFF?text=Test+Usuario"
+                ]
+            },
+            // ... Add data for other projects here
+        };
+
+        // --- CUSTOM CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, .group');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseover', () => cursorDot.classList.add('cursor-grow'));
+            el.addEventListener('mouseleave', () => cursorDot.classList.remove('cursor-grow'));
+        });
+
+        // --- HEADER SCROLL EFFECT ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-gray-900', 'bg-opacity-80', 'backdrop-blur-sm', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-gray-900', 'bg-opacity-80', 'backdrop-blur-sm', 'shadow-lg');
+            }
+        });
+
+        // --- MOBILE MENU ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuOpenIcon = document.getElementById('menu-open-icon');
+        const menuCloseIcon = document.getElementById('menu-close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden');
+            menuCloseIcon.classList.toggle('hidden');
+        });
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuOpenIcon.classList.remove('hidden');
+                menuCloseIcon.classList.add('hidden');
+            });
+        });
+
+        // --- SCROLL REVEAL ANIMATION ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // --- HERO CANVAS ANIMATION ---
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        setCanvasSize();
+
+        window.addEventListener('resize', setCanvasSize);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        class Particle {
+            constructor(x, y, size, color, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = color;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.baseSize = size;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Mouse interaction
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100 && this.size < this.baseSize * 4) {
+                    this.size += 0.5;
+                } else if (this.size > this.baseSize) {
+                    this.size -= 0.1;
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = Math.random() * 2 + 1;
+                let x = Math.random() * (canvas.width - size * 2) + size;
+                let y = Math.random() * (canvas.height - size * 2) + size;
+                let speedX = (Math.random() * 0.4) - 0.2;
+                let speedY = (Math.random() * 0.4) - 0.2;
+                let color = 'rgba(94, 234, 212, 0.4)';
+                particles.push(new Particle(x, y, size, color, speedX, speedY));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+        
+        initParticles();
+        animate();
+
+        // --- PROJECT MODAL ---
+        const modal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        document.querySelectorAll('.view-project-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.group');
+                const projectId = card.dataset.projectId;
+                const data = projectData[projectId] || projectData[1]; // Fallback to 1
+
+                modalContent.innerHTML = `
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 gradient-text">${data.title}</h2>
+                    <p class="text-lg text-gray-400 mb-8">${data.category}</p>
+                    <img src="${data.image}" alt="${data.title}" class="w-full rounded-lg mb-8 shadow-lg">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                        <div class="md:col-span-2">
+                            <h3 class="text-2xl font-bold mb-4 text-white">El Reto</h3>
+                            <p class="text-gray-300 mb-8">${data.problem}</p>
+                            
+                            <h3 class="text-2xl font-bold mb-4 text-white">Proceso y Solución</h3>
+                            <p class="text-gray-300 mb-8">${data.process}</p>
+                            <p class="text-gray-300">${data.solution}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4 text-white">Herramientas</h3>
+                            <ul class="space-y-2 mb-8">
+                                ${data.tools.map(tool => `<li class="text-gray-300 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-teal-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>${tool}</li>`).join('')}
+                            </ul>
+                            <h3 class="text-2xl font-bold mb-4 text-white">Detrás de Cámaras</h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                ${data.gallery.map(img => `<img src="${img}" class="rounded-md w-full h-auto object-cover">`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // --- TESTIMONIAL SLIDER ---
+        const slider = document.getElementById('testimonial-container');
+        const prevBtn = document.getElementById('prev-testimonial');
+        const nextBtn = document.getElementById('next-testimonial');
+        let currentIndex = 0;
+        const totalSlides = slider.children.length;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlider();
+        });
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlider();
+        }, 5000); // Auto-slide every 5 seconds
+
+
+        // --- CONTACT FORM ---
+        const contactForm = document.getElementById('contact-form');
+        const successMessage = document.getElementById('form-success-message');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // This is a simulation. In a real project, you would send data to a server here.
+            contactForm.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => {
+                successMessage.classList.add('hidden');
+            }, 5000);
+        });
+
+        // --- FOOTER YEAR ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    });
+    </script>
+
+</body>
+</html>
