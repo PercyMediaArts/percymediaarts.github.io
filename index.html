@@ -248,13 +248,27 @@
 
             let mediaHtml = '';
             if (project.media_type === 'video') {
-                mediaHtml = `<div class="aspect-video bg-black rounded-lg"><video src="${project.media_files[0]}" controls class="w-full h-full rounded-lg"></video></div>`;
-            } else {
-                mediaHtml = `<div class="relative">${project.media_files.map((file, index) => `<img src="${file}" class="carousel-item w-full rounded-lg ${index === 0 ? '' : 'hidden'}" alt="Imagen ${index + 1}">`).join('')}</div>`;
+                mediaHtml = `<div class="aspect-video bg-black rounded-lg"><video src="${project.media_files[0]}" controls autoplay muted loop class="w-full h-full rounded-lg"></video></div>`;
+            } else { // Image carousel
+                mediaHtml = `
+                    <div class="relative aspect-video bg-slate-200 rounded-lg">
+                        ${project.media_files.map((file, index) => `
+                            <img src="${file}" class="carousel-item w-full h-full object-contain absolute top-0 left-0 transition-opacity duration-300 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}" alt="Imagen del proyecto ${index + 1}">
+                        `).join('')}
+                        ${project.media_files.length > 1 ? `
+                        <button id="prev-btn" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80 transition text-slate-800 focus:outline-none z-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                        </button>
+                        <button id="next-btn" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/80 transition text-slate-800 focus:outline-none z-10">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        </button>
+                        ` : ''}
+                    </div>
+                `;
             }
 
             modalContent.innerHTML = `
-                <button id="close-modal-btn" class="absolute top-4 right-4 text-4xl text-slate-500 hover:text-slate-800 transition z-10">&times;</button>
+                <button id="close-modal-btn" class="absolute top-4 right-4 text-4xl text-slate-500 hover:text-slate-800 transition z-20">&times;</button>
                 <h2 class="text-3xl md:text-4xl font-bold mb-2 gradient-text">${project.title}</h2>
                 <p class="text-lg text-slate-500 mb-6">${project.desc}</p>
                 ${mediaHtml}
@@ -263,7 +277,31 @@
             document.body.classList.add('modal-active');
             modal.classList.remove('hidden');
             setTimeout(() => { modal.classList.remove('opacity-0'); modalContent.classList.remove('scale-95'); }, 10);
+            
             document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+            
+            if (project.media_type === 'image' && project.media_files.length > 1) {
+                let currentIndex = 0;
+                const items = modalContent.querySelectorAll('.carousel-item');
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+
+                function showItem(index) {
+                    items.forEach((item, i) => {
+                        item.classList.toggle('opacity-100', i === index);
+                        item.classList.toggle('opacity-0', i !== index);
+                    });
+                }
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                    showItem(currentIndex);
+                });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    showItem(currentIndex);
+                });
+            }
         }
 
         function closeModal() {
