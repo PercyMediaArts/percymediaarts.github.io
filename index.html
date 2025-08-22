@@ -127,8 +127,8 @@
                 </div>
 
                 <!-- Tabs Navigation -->
-                <div class="flex justify-center mb-12 border-b border-slate-200 reveal">
-                    <button data-tab="diseno" class="tab-btn text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-slate-500 hover:text-sky-500 transition-colors tab-active">Diseño Gráfico</button>
+                <div class="flex flex-wrap justify-center mb-12 border-b border-slate-200 reveal">
+                    <button data-tab="diseno" class="tab-btn text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-slate-500 hover:text-sky-500 transition-colors">Diseño Gráfico</button>
                     <button data-tab="animacion" class="tab-btn text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-slate-500 hover:text-sky-500 transition-colors">Animación y Publicidad</button>
                     <button data-tab="video" class="tab-btn text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-slate-500 hover:text-sky-500 transition-colors">Edición de Video</button>
                     <button data-tab="3d" class="tab-btn text-lg font-semibold py-4 px-6 border-b-2 border-transparent text-slate-500 hover:text-sky-500 transition-colors">3D</button>
@@ -225,23 +225,41 @@
                 `;
                 projectsGrid.appendChild(projectCard);
             });
-            // Re-trigger reveal animation observer
+            // Re-trigger reveal animation observer for new elements
             observeReveals();
         }
 
+        function activateTab(category) {
+            const validCategories = Array.from(tabButtons).map(btn => btn.dataset.tab);
+            if (!validCategories.includes(category)) {
+                category = 'diseno'; // Default to 'diseno' if hash is invalid
+            }
+
+            tabButtons.forEach(btn => {
+                btn.classList.toggle('tab-active', btn.dataset.tab === category);
+            });
+            renderProjects(category);
+        }
+
         tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const category = button.dataset.tab;
-                
-                tabButtons.forEach(btn => btn.classList.remove('tab-active'));
-                button.classList.add('tab-active');
-                
-                renderProjects(category);
+            button.addEventListener('click', (e) => {
+                const category = e.currentTarget.dataset.tab;
+                window.location.hash = category;
             });
         });
 
-        // Initial render
-        renderProjects('diseno');
+        // Listen for hash changes to update the active tab
+        window.addEventListener('hashchange', () => {
+            const category = window.location.hash.substring(1);
+            activateTab(category);
+        });
+
+        // Initial load: check hash and activate the correct tab
+        const initialCategory = window.location.hash.substring(1) || 'diseno';
+        activateTab(initialCategory);
+        if (!window.location.hash) {
+            history.replaceState(null, '', '#diseno');
+        }
 
 
         // --- HEADER SCROLL EFFECT ---
